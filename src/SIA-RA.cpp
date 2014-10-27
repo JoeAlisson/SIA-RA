@@ -4,8 +4,8 @@ using namespace std;
 
 int main(int, char**)
 {
-    VideoCapture cap(0); // open the default camera
-    if (!cap.isOpened()) // check if we succeeded
+    VideoCapture cap(0);
+    if (!cap.isOpened())
         return -1;
 
     namedWindow("Filtered", WINDOW_AUTOSIZE);
@@ -14,8 +14,13 @@ int main(int, char**)
     Mat frame;
     FilterProcessor bordaProcessor;
 	FilterProcessor backProcessor;
-    bordaProcessor.addFilter(detectarBordas);
-    backProcessor.addFilter(borrarFundo);
+
+    //bordaProcessor.addFilter(edgeDetectSobel);
+    //backProcessor.addFilter(Gaussian);
+    bordaProcessor.addFilter(edgeDetectCanny);
+
+    //bordaProcessor.addFilter(edgeDetectLaplacian);
+    backProcessor.addFilter(GaussianSatured);
 
     PipelineProcessor pipeline;
     pipeline.addFilterProcessor(&bordaProcessor);
@@ -23,6 +28,7 @@ int main(int, char**)
 
     while(true) {
         cap >> frame;
+        imshow("original", frame);
         frame.copyTo(bordaProcessor.image);
         frame.copyTo(backProcessor.image);
         pipeline.process();

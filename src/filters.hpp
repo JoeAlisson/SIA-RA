@@ -10,9 +10,14 @@
 
 #include "processor.hpp"
 
-void detectarBordas(Mat&);
+void edgeDetectCanny(Mat&);
 
-void borrarFundo(Mat&);
+void edgeDetectSobel(Mat& img);
+
+void edgeDetectLaplacian(Mat& img);
+
+void Gaussian(Mat&);
+void GaussianSatured(Mat&);
 
 
 #endif /* FILTERS_HPP_ */
