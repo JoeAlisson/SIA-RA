@@ -9,6 +9,7 @@
 #define FILTERS_HPP_
 
 #include "processor.hpp"
+#include <opencv2/photo/photo.hpp>
 
 void edgeDetectCanny(Mat&);
 
@@ -18,6 +19,7 @@ void edgeDetectLaplacian(Mat& img);
 
 void Gaussian(Mat&);
 void GaussianSatured(Mat&);
+void bilateralSatured(Mat&);
 
 
 #endif /* FILTERS_HPP_ */

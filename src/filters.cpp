@@ -10,10 +10,9 @@
 double dilation_size = 1.5;
 
 void edgeDetectCanny(Mat& img) {
-	cvtColor(img, img, CV_BGR2GRAY);
-	GaussianBlur(img, img, Size(7, 7), 2, 2);
-	Canny(img, img, 0, 22, 3, true);
-	dilate(img, img, getStructuringElement(MORPH_ELLIPSE, Size(1.5 * dilation_size + 1, 1.5 * dilation_size + 1), Point(dilation_size, dilation_size)));
+	GaussianBlur(img, img, Size(9,9), 0, 0);
+	Canny(img, img, 24, 75, 3, true);
+	dilate(img, img,getStructuringElement(MORPH_ELLIPSE, Size(1.2 * dilation_size + 1, 1.2 * dilation_size + 1), Point(dilation_size, dilation_size)));
 	bitwise_not(img, img);
 	cvtColor(img, img, CV_GRAY2BGR);
 }
@@ -38,11 +37,12 @@ void edgeDetectSobel(Mat& img) {
 
 void edgeDetectLaplacian(Mat& img) {
 	GaussianBlur(img, img, Size(5, 5), 0, 0);
-	cvtColor(img, img, CV_RGB2GRAY);
-	Laplacian( img, img, CV_16S, 3, 1, 0, BORDER_DEFAULT );
-	threshold(img, img, 6, 255, THRESH_BINARY_INV);
-	convertScaleAbs( img, img );
-	cvtColor(img, img, CV_GRAY2BGR);
+	//cvtColor(img, img, CV_RGB2GRAY);
+	Laplacian(img, img, CV_16S, 3, 1, 0, BORDER_DEFAULT);
+	threshold(img, img, 5, 255, THRESH_BINARY_INV);
+	dilate(img, img, getStructuringElement(MORPH_ELLIPSE, Size(dilation_size + 1, dilation_size + 1), Point(dilation_size, dilation_size)));
+	convertScaleAbs(img, img);
+	//cvtColor(img, img, CV_GRAY2BGR);
 }
 
 void saturarHSI(Mat& src, Mat& dst, int value) {
@@ -60,10 +60,20 @@ void saturar(Mat& src, Mat& dst, int value) {
 }
 
 void GaussianSatured(Mat& frame) {
-	medianBlur(frame,frame,3);
-	saturar(frame,frame,55);
+	medianBlur(frame, frame, 3);
+	saturar(frame, frame, 55);
 	GaussianBlur(frame, frame, Size(13, 13), 5, 5);
-
+}
+void bilateralSatured(Mat& frame) {
+	Mat tmp;
+	for (int i = 0; i < 2; ++i) {
+		pyrDown(frame, frame, Size(frame.cols / 2, frame.rows / 2));
+	}
+	saturar(frame, tmp, 45);
+	bilateralFilter(tmp, frame, 7, 9, 11);
+	for (int i = 0; i < 2; ++i) {
+		pyrUp(frame, frame, Size(frame.cols * 2, frame.rows * 2));
+	}
 }
 void Gaussian(Mat& frame) {
 	GaussianBlur(frame, frame, Size(11, 11), 7, 7);

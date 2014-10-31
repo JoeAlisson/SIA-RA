@@ -21,6 +21,8 @@ int main(int, char**)
 
     //bordaProcessor.addFilter(edgeDetectLaplacian);
     backProcessor.addFilter(GaussianSatured);
+    //backProcessor.addFilter(bilateralSatured);
+
 
     PipelineProcessor pipeline;
     pipeline.addFilterProcessor(&bordaProcessor);
@@ -29,11 +31,10 @@ int main(int, char**)
     while(true) {
         cap >> frame;
         imshow("original", frame);
-        frame.copyTo(bordaProcessor.image);
-        frame.copyTo(backProcessor.image);
+        pipeline.setImage(frame);
         pipeline.process();
         imshow("Filtered", pipeline.join());
-        imshow("borda", bordaProcessor.image);
+        imshow("borda", bordaProcessor.getImage());
         if (waitKey(10) == 27)
             break;
     }

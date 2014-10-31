@@ -15,23 +15,30 @@
 
 using namespace cv;
 
+class PipelineProcessor;
 
 class FilterProcessor {
 	std::vector<void(*)(Mat&)> *filters;
-public:
 	Mat image;
+	friend class PipelineProcessor;
+public:
 	FilterProcessor();
 	~FilterProcessor();
 	void addFilter(void(*)(Mat&));
 	void process();
+	const Mat& getImage() const;
 };
 
 
 class PipelineProcessor {
 	std::vector<FilterProcessor*> *filterProcessors;
+	int pyramid;
 public:
 	PipelineProcessor();
+	~PipelineProcessor();
 	void addFilterProcessor(FilterProcessor*);
+	void setPyramid(int);
+	void setImage(Mat&);
 	void process();
 	Mat join();
 };
