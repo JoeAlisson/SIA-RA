@@ -10,12 +10,15 @@
 
 #include "processor.hpp"
 #include <opencv2/photo/photo.hpp>
+#include <opencv2/objdetect/objdetect.hpp>
 
 void edgeDetectCanny(Mat&);
-
 void edgeDetectSobel(Mat& img);
-
 void edgeDetectLaplacian(Mat& img);
+
+void edgeDetect(Mat& img);
+
+
 
 void Gaussian(Mat&);
 void GaussianSatured(Mat&);

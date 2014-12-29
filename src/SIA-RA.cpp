@@ -16,10 +16,10 @@ int main(int, char**)
 	FilterProcessor backProcessor;
 
     //bordaProcessor.addFilter(edgeDetectSobel);
+	//bordaProcessor.addFilter(edgeDetectLaplacian);
+    //bordaProcessor.addFilter(edgeDetectCanny);
+    bordaProcessor.addFilter(edgeDetect);
     //backProcessor.addFilter(Gaussian);
-    bordaProcessor.addFilter(edgeDetectCanny);
-
-    //bordaProcessor.addFilter(edgeDetectLaplacian);
     backProcessor.addFilter(GaussianSatured);
     //backProcessor.addFilter(bilateralSatured);
 
